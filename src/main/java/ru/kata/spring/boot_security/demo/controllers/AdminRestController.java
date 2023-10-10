@@ -6,8 +6,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
-import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
-import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
+import ru.kata.spring.boot_security.demo.service.RoleService;
+import ru.kata.spring.boot_security.demo.service.UserService;
 
 import java.security.Principal;
 import java.util.List;
@@ -16,11 +16,11 @@ import java.util.stream.Collectors;
 
 @RestController
 public class AdminRestController {
-    private final UserServiceImpl userService;
-    private final RoleServiceImpl roleService;
+    private final UserService userService;
+    private final RoleService roleService;
 
 
-    public AdminRestController(UserServiceImpl userService, RoleServiceImpl roleService) {
+    public AdminRestController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
@@ -52,7 +52,7 @@ public class AdminRestController {
     @PostMapping("/makeUser")
     public ResponseEntity<User> creatRestUser(@RequestBody User user) {
         List<String> list1 = user.getRoles().stream().map(Role::getRole).collect(Collectors.toList());
-        Set<Role> list2 = roleService.listByRole(list1);
+        Set<Role> list2 = roleService.findRoleByRoleIn(list1);
         user.setRoles(Set.copyOf(list2));
         userService.add(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -61,7 +61,7 @@ public class AdminRestController {
     @PatchMapping("/changeUser")
     public ResponseEntity<User> updateRestUser(@RequestBody User user) {
         List<String> list1 = user.getRoles().stream().map(Role::getRole).collect(Collectors.toList());
-        Set<Role> list2 = roleService.listByRole(list1);
+        Set<Role> list2 = roleService.findRoleByRoleIn(list1);
         user.setRoles(Set.copyOf(list2));
         userService.edit(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -72,5 +72,4 @@ public class AdminRestController {
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

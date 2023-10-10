@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class RoleServiceImpl {
+public class RoleService {
     private final RoleRepository roleRepository;
 
     public void addRole(Role role) {
@@ -36,7 +36,7 @@ public class RoleServiceImpl {
     }
 
     @Transactional(readOnly = true)
-    public Set<Role> listByRole(List<String> email) {
+    public Set<Role> findRoleByRoleIn(List<String> email) {
         return roleRepository.findRoleByRoleIn(email);
     }
 }

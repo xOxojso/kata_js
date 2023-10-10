@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
-import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
-import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
+import ru.kata.spring.boot_security.demo.service.RoleService;
+import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.annotation.PostConstruct;
 import java.util.HashSet;
@@ -14,8 +14,8 @@ import java.util.Set;
 @Component
 @RequiredArgsConstructor
 public class UtilDB {
-    private final RoleServiceImpl roleService;
-    private final UserServiceImpl userService;
+    private final RoleService roleService;
+    private final UserService userService;
 
     @PostConstruct
     public void utilDB() {
